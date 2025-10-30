@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Cliente } from '../../cliente/entities/cliente.entity'; // Importa Cliente
+import { Cliente } from '../../cliente/entities/cliente.entity';
 
 @Entity('endereco')
 export class Endereco {
@@ -9,10 +9,10 @@ export class Endereco {
   @Column({ length: 100 })
   logradouro: string;
 
-  @Column({ length: 20 })
+  @Column({ length: 10 })
   numero: string;
 
-  @Column({ length: 100, nullable: true })
+  @Column({ length: 50, nullable: true })
   complemento: string;
 
   @Column({ length: 50 })
@@ -24,18 +24,14 @@ export class Endereco {
   @Column({ length: 2 })
   estado: string;
 
-  @Column({ length: 10 })
+  @Column({ length: 9 })
   cep: string;
-  
-  // Campo que marca se é o endereço principal do cliente
+
   @Column({ default: false })
   principal: boolean;
 
-  // Relacionamento N:1 com Cliente (Muitos Endereços pertencem a UM Cliente)
+  // Relacionamento N:1 com Cliente (Muitos Endereços para um Cliente)
   @ManyToOne(() => Cliente, (cliente) => cliente.enderecos)
-  @JoinColumn({ name: 'cliente_id' }) // Coluna FK no BD
+  @JoinColumn({ name: 'cliente_id' }) // Coluna FK no banco
   cliente: Cliente;
-  
-  @Column({ name: 'cliente_id' }) // ID da chave estrangeira
-  clienteId: number;
 }
