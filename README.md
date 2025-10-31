@@ -1,98 +1,254 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🛍️ E-commerce Web3
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**E-commerce Web3** é uma aplicação web desenvolvida como projeto acadêmico, com o objetivo de implementar um sistema completo de **gestão de produtos, clientes, endereços, pedidos e pagamentos**, utilizando **NestJS** no backend e **ReactJS** no frontend.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+O projeto segue boas práticas de arquitetura, modularização e uso de banco de dados relacional com **MySQL**, além de documentação via **Swagger**.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Tecnologias Utilizadas
 
-## Project setup
+### **Backend**
+- [NestJS](https://nestjs.com/) — framework Node.js baseado em TypeScript  
+- [TypeORM](https://typeorm.io/) — ORM para banco de dados relacional  
+- [MySQL](https://www.mysql.com/) — banco de dados relacional  
+- [Class Validator](https://github.com/typestack/class-validator) — validação de dados DTO  
+- [Swagger](https://swagger.io/) — documentação automática da API  
+- [Dotenv](https://www.npmjs.com/package/dotenv) — gerenciamento de variáveis de ambiente  
 
-```bash
-$ npm install
-```
+### **Frontend (Semana 2)**
+- [ReactJS](https://reactjs.org/) — biblioteca para interfaces  
+- [Axios](https://axios-http.com/) — cliente HTTP para requisições à API  
+- [Bootstrap](https://getbootstrap.com/) ou [TailwindCSS](https://tailwindcss.com/) — estilização  
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## 🧱 Estrutura do Projeto
 
-# watch mode
-$ npm run start:dev
+backend/
+│
+├── src/
+│ ├── app.module.ts
+│ ├── main.ts
+│ ├── modules/
+│ │ ├── clientes/
+│ │ ├── enderecos/
+│ │ ├── categorias/
+│ │ ├── produtos/
+│ │ ├── pedidos/
+│ │ └── pagamentos/
+│ └── common/
+│
+├── .env
+├── package.json
+└── tsconfig.json
 
-# production mode
-$ npm run start:prod
-```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## ⚙️ Configuração do Ambiente
 
-# e2e tests
-$ npm run test:e2e
+### 1️⃣ Clone o repositório
 
-# test coverage
-$ npm run test:cov
-```
+git clone https://github.com/Igomes11/ecommerce-web3.git
+cd ecommerce-web3/backend
 
-## Deployment
+2️⃣ Instale as dependências
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+npm install
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+DB_HOST=localhost
+DB_PORT=3306 #porta do MySQL
+DB_USERNAME=root
+DB_PASSWORD=suasenha
+DB_DATABASE=ecommerce
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+💡 Dica: verifique se o MySQL está rodando localmente e o banco ecommerce está criado.
 
-## Resources
+🧩 Módulos Implementados
+👤 Clientes
 
-Check out a few resources that may come in handy when working with NestJS:
+Gerencia os dados dos clientes da loja.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Endpoints principais:
 
-## Support
+POST /clientes — cria um novo cliente
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+GET /clientes — lista todos os clientes
 
-## Stay in touch
+PATCH /clientes/:id — atualiza informações do cliente
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+DELETE /clientes/:id — remove um cliente
 
-## License
+Exemplo de dados:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+{
+  "id": "1",
+  "nome": "Igor",
+  "email": "igor@exemplo.com",
+  "telefone": "81999999999",
+  "criadoEm": "2025-10-29T12:19:16.600Z"
+}
+
+🏠 Endereços
+
+Cada cliente pode ter um ou mais endereços, com um endereço marcado como padrão.
+
+Endpoints principais:
+
+POST /enderecos — adiciona um endereço a um cliente
+
+GET /enderecos — lista todos os endereços
+
+PATCH /enderecos/:id — atualiza um endereço
+
+Exemplo de dados:
+```s
+{
+  "id": "1",
+  "rua": "Av. Brasil",
+  "numero": "123",
+  "cidade": "Recife",
+  "estado": "PE",
+  "cep": "50000-000",
+  "padrao": true,
+  "clienteId": "1"
+}
+
+🛒 Produtos e Categorias
+
+Controle de estoque, preços e descrição de produtos.
+
+***Categorias***
+
+POST /categorias
+
+GET /categorias
+
+Produtos
+
+POST /produtos
+
+GET /produtos
+
+PATCH /produtos/:id
+
+DELETE /produtos/:id
+
+Relacionamento:
+Categoria 1:N Produtos
+
+📦 Pedidos e Itens do Pedido (em desenvolvimento)
+
+Gerencia os pedidos feitos pelos clientes, vinculando produtos e calculando o valor total automaticamente.
+
+Endpoints planejados:
+
+POST /pedidos — cria um novo pedido
+
+GET /pedidos — lista pedidos com seus itens
+
+PATCH /pedidos/:id — atualiza status do pedido
+
+Regras de negócio:
+
+Um pedido pertence a um cliente
+
+O total é calculado com base nos itens (quantidade * preço)
+
+O status inicial é "AGUARDANDO_PAGAMENTO"
+
+💳 Pagamentos (em desenvolvimento)
+
+Responsável por registrar pagamentos e atualizar o status dos pedidos e do estoque.
+
+Fluxo previsto:
+
+Pedido criado com status "AGUARDANDO_PAGAMENTO"
+
+Ao confirmar o pagamento:
+
+Pedido passa para "PAGO"
+
+Estoque de cada produto é reduzido
+
+Um registro de pagamento é criado no banco
+
+🧠 Regras de Negócio Implementadas
+
+✅ Cliente pode ter múltiplos endereços
+✅ Email do cliente é único
+✅ Endereço padrão é atualizado automaticamente
+✅ Pedido soma automaticamente o valor total dos produtos
+✅ Pagamento altera o status do pedido e atualiza o estoque
+
+🧪 Testes com Postman
+Criar cliente
+POST http://localhost:3000/clientes
+Content-Type: application/json
+
+{
+  "nome": "Igor",
+  "email": "igor@exemplo.com",
+  "telefone": "81999999999"
+}
+
+Criar endereço
+POST http://localhost:3000/enderecos
+Content-Type: application/json
+
+{
+  "clienteId": "1",
+  "rua": "Rua Exemplo",
+  "numero": "45",
+  "cidade": "Recife",
+  "estado": "PE",
+  "cep": "50000-000",
+  "padrao": true
+}
+
+📘 Documentação (Swagger)
+
+Após subir o servidor, acesse:
+👉 http://localhost:3000/api
+
+Lá você encontrará todos os endpoints documentados automaticamente com Swagger UI.
+
+🌐 Deploy (Previsto)
+
+Backend: Render
+ ou Railway
+
+Banco de Dados: Railway
+ ou PlanetScale
+
+Frontend: Vercel
+ ou Netlify
+
+📅 Cronograma de Desenvolvimento
+Etapa	Tarefa	Status
+Dia 1	Configuração do ambiente	✅
+Dia 2	Categorias e Produtos	✅
+Dia 3	Clientes e Endereços	✅
+Dia 4	Pedidos e Itens do Pedido	⚙️ Em andamento
+Dia 5	Pagamentos e Estoque	⏳ A fazer
+Dia 6	Testes + Swagger + README	⏳ A fazer
+Dia 7	Deploy Backend	⏳ A fazer
+Semana 2	Frontend React	⏳ A fazer
+👨‍💻 Autor
+
+Igor Gomes
+📍 Desenvolvedor Full Stack | Estudante de Sistemas de Informação
+📧 igor@exemplo.com
+
+💻 Projeto acadêmico — 3º semestre (Gestão de Riscos e E-commerce Web3)
+
+🏁 Status do Projeto
+
+🚧 Em desenvolvimento
+Backend funcional e frontend em fase de estruturação.
+As próximas etapas incluem o módulo de pagamento, documentação Swagger e integração com React.
+
+⭐ Se este projeto te inspirou, deixe uma estrela no repositório!
+
