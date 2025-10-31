@@ -4,11 +4,13 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  OneToOne, // NOVO
   JoinColumn,
 } from 'typeorm';
 import { Cliente } from '../../cliente/entities/cliente.entity';
 import { Endereco } from '../../endereco/entities/endereco.entity';
-import { ItemPedido } from '../../item-pedido/entities/item-pedido.entity'; // Caminho Corrigido
+import { ItemPedido } from '../../item-pedido/entities/item-pedido.entity';
+import { Pagamento } from '../../pagamento/entities/pagamento.entity'; // NOVO
 
 // Enum para os status do pedido
 export enum PedidoStatus {
@@ -24,10 +26,10 @@ export class Pedido {
   id: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
-  subtotal: number;
+  subtotal: number; // Soma dos preços dos itens
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
-  total: number;
+  total: number; // Total final
 
   @Column({ type: 'int', default: 0 })
   quantidadeTotal: number;
@@ -42,7 +44,9 @@ export class Pedido {
   })
   status: PedidoStatus;
 
-  // N:1 com Cliente (CORRIGE: Property 'pedidos' does not exist)
+  // --- RELACIONAMENTOS ---
+
+  // N:1 com Cliente
   @ManyToOne(() => Cliente, (cliente) => cliente.pedidos)
   @JoinColumn({ name: 'cliente_id' })
   cliente: Cliente;
@@ -55,4 +59,8 @@ export class Pedido {
   // 1:N com ItemPedido
   @OneToMany(() => ItemPedido, (itemPedido) => itemPedido.pedido)
   itens: ItemPedido[];
+
+  // NOVO: 1:1 com Pagamento (relacionamento inverso)
+  @OneToOne(() => Pagamento, (pagamento) => pagamento.pedido)
+  pagamento: Pagamento;
 }
