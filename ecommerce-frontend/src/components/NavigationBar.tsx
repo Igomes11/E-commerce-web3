@@ -1,6 +1,5 @@
-import React from "react";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
-import { User, CurrentView } from "../types/types";
+import type { User, CurrentView } from "../types";
 
 interface NavigationBarProps {
   user: User;

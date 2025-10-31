@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Container } from 'react-bootstrap';
-import AuthScreen from './AuthScreen.tsx'; 
-import NavigationBar from './components/NavigationBar.tsx';
-import ProductCatalog from './components/ProductCatalog.tsx';
-import ProductDetails from './components/ProductDetails.tsx'; 
-import { CurrentView, User } from './types/types'; 
+import AuthScreen from './AuthScreen';
+import NavigationBar from './components/NavigationBar';
+import ProductCatalog from './components/ProductCatalog';
+import ProductDetails from './components/ProductDetails';
+import type { CurrentView, User } from './types';
   
 
 function App() {
@@ -62,7 +62,6 @@ function App() {
         return (
           <ProductCatalog 
             onSelectProduct={(id) => { setSelectedProductId(id); setView('details'); }} 
-            onChangeView={setView} 
             cartItems={cartItems}
           />
         );
@@ -88,7 +87,6 @@ function App() {
       default:
         return <ProductCatalog 
             onSelectProduct={(id) => { setSelectedProductId(id); setView('details'); }} 
-            onChangeView={setView} 
             cartItems={cartItems}
           />;
     }

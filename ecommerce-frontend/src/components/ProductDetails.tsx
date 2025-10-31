@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Card, Button, Alert, Spinner, Row, Col, Form } from 'react-bootstrap';
-import { Produto, CurrentView } from '../types/types';
+import type { Produto, CurrentView } from '../types';
 
 const API_URL = 'http://localhost:3000/produto';
 

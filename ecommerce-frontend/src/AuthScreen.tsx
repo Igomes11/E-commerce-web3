@@ -9,7 +9,7 @@ import {
   Button,
   Alert,
 } from "react-bootstrap";
-import { User } from "./types/types";
+import type { User } from "./types";
 
 
 const API_URL = "http://localhost:3000/cliente";

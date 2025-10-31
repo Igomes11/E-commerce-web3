@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Container,
@@ -9,19 +9,17 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import { Produto, CurrentView } from "../types/types";
+import type { Produto } from "../types";
 
 const API_URL = "http://localhost:3000/produto";
 
 interface ProductCatalogProps {
   onSelectProduct: (id: number) => void;
-  onChangeView: (view: CurrentView) => void;
   cartItems: { productId: number; quantidade: number }[];
 }
 
 const ProductCatalog: React.FC<ProductCatalogProps> = ({
   onSelectProduct,
-  onChangeView,
   cartItems,
 }) => {
   const [products, setProducts] = useState<Produto[]>([]);
