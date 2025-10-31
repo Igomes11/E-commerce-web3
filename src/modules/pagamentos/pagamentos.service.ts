@@ -16,7 +16,7 @@ export class PagamentosService {
   ) {}
 
   async criarPagamento(dto: { pedidoId: string; metodo: string }) {
-    const pedido = await this.pedidoRepo.findOne({ where: { id: dto.pedidoId }, relations: ['itens'] });
+    const pedido = await this.pedidoRepo.findOne({ where: { id: parseInt(dto.pedidoId) }, relations: ['itens'] });
     if (!pedido) throw new NotFoundException('Pedido não encontrado');
     if (pedido.status !== 'AGUARDANDO_PAGAMENTO')
       throw new BadRequestException('Pedido não pode receber pagamento neste status');

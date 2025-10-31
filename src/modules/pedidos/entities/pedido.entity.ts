@@ -6,8 +6,8 @@ import { Pagamento } from '../../pagamentos/entities/pagamento.entity';
 
 @Entity()
 export class Pedido {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @ManyToOne(() => Cliente, (cliente) => cliente.pedidos)
   cliente: Cliente;
@@ -18,7 +18,7 @@ export class Pedido {
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
   total: number;
 
-  @Column({ default: 'ABERTO' })
+  @Column({ default: 'AGUARDANDO_PAGAMENTO' })
   status: string;
 
   @CreateDateColumn()

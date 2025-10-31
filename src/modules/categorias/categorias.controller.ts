@@ -8,8 +8,8 @@ export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
   @Post()
-  create(@Body() createCategoriaDto: CreateCategoriaDto) {
-    return this.categoriasService.create(createCategoriaDto);
+  create(@Body() dto: CreateCategoriaDto) {
+    return this.categoriasService.create(dto);
   }
 
   @Get()
@@ -19,16 +19,17 @@ export class CategoriasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.categoriasService.findOne(+id);
+    return this.categoriasService.findOne(Number(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriaDto: UpdateCategoriaDto) {
-    return this.categoriasService.update(+id, updateCategoriaDto);
+  update(@Param('id') id: string, @Body() dto: UpdateCategoriaDto) {
+    return this.categoriasService.update(Number(id), dto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.categoriasService.remove(+id);
+    return this.categoriasService.remove(Number(id));
   }
 }
+
