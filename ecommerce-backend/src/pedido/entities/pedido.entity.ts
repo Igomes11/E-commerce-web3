@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Cliente } from '../../cliente/entities/cliente.entity';
 import { Endereco } from '../../endereco/entities/endereco.entity';
-import { ItemPedido } from '../../item-pedido/entities/item-pedido.entity';
+import { ItemPedido } from '../../item-pedido/entities/item-pedido.entity'; // Caminho Corrigido
 
 // Enum para os status do pedido
 export enum PedidoStatus {
@@ -24,13 +24,13 @@ export class Pedido {
   id: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
-  subtotal: number; // Soma dos preços dos itens
+  subtotal: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
-  total: number; // Subtotal + Frete (vamos simplificar o frete para zero por enquanto)
+  total: number;
 
   @Column({ type: 'int', default: 0 })
-  quantidadeTotal: number; // Soma das quantidades dos itens
+  quantidadeTotal: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dataCriacao: Date;
@@ -42,19 +42,17 @@ export class Pedido {
   })
   status: PedidoStatus;
 
-  // --- RELACIONAMENTOS ---
-
-  // N:1 com Cliente (Quem fez o pedido)
+  // N:1 com Cliente (CORRIGE: Property 'pedidos' does not exist)
   @ManyToOne(() => Cliente, (cliente) => cliente.pedidos)
   @JoinColumn({ name: 'cliente_id' })
   cliente: Cliente;
 
-  // N:1 com Endereço (Endereço de entrega selecionado no momento do pedido)
+  // N:1 com Endereço
   @ManyToOne(() => Endereco)
   @JoinColumn({ name: 'endereco_id' })
   endereco: Endereco;
 
-  // 1:N com ItemPedido (Itens dentro deste pedido)
+  // 1:N com ItemPedido
   @OneToMany(() => ItemPedido, (itemPedido) => itemPedido.pedido)
   itens: ItemPedido[];
 }

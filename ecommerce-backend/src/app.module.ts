@@ -7,6 +7,7 @@ import { CategoriaModule } from './categoria/categoria.module';
 import { ProdutoModule } from './produto/produto.module';
 import { PedidoModule } from './pedido/pedido.module';
 import { ItemPedidoModule } from './item-pedido/item-pedido.module';
+import { PagamentoModule } from './pagamento/pagamento.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ItemPedidoModule } from './item-pedido/item-pedido.module';
     ProdutoModule,
     PedidoModule,
     ItemPedidoModule,
+    PagamentoModule,
   ],
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Categoria } from '../../categoria/entities/categoria.entity';
+import { ItemPedido } from '../../item-pedido/entities/item-pedido.entity'; // IMPORTADO
 
 @Entity('produto')
 export class Produto {
@@ -16,19 +17,22 @@ export class Produto {
   preco: number;
 
   @Column({ default: 0 })
-  estoque: number; // Regra: Estoque é debitado após o pagamento.
+  estoque: number;
 
   @Column({ default: 'placeholder.png' })
   imagem: string;
 
   @Column({ default: true })
-  statusAtivo: boolean; // Regra: Produto inativo não pode ser adicionado a pedidos.
-
-  // Relacionamento N:1 com Categoria
+  statusAtivo: boolean;
+  
   @ManyToOne(() => Categoria, (categoria) => categoria.produtos)
-  @JoinColumn({ name: 'categoria_id' }) // Coluna FK no banco
+  @JoinColumn({ name: 'categoria_id' })
   categoria: Categoria;
   
   @Column({ name: 'categoria_id' })
-  categoriaId: number; // Chave estrangeira
+  categoriaId: number;
+
+  // CORRIGIDO: Adiciona o array de itens de pedido
+  @OneToMany(() => ItemPedido, (itemPedido) => itemPedido.produto)
+  itensPedido: ItemPedido[];
 }

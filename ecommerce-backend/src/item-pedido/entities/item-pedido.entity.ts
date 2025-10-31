@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Pedido } from '../../pedido/entities/pedido.entity';
+import { Pedido } from '../../pedido/entities/pedido.entity'; // Caminho Corrigido
 import { Produto } from '../../produto/entities/produto.entity';
 
 @Entity('item_pedido')
@@ -27,7 +27,7 @@ export class ItemPedido {
   @JoinColumn({ name: 'pedido_id' })
   pedido: Pedido;
 
-  // N:1 com Produto
+  // N:1 com Produto (CORRIGE: usa itensPedido)
   @ManyToOne(() => Produto, (produto) => produto.itensPedido)
   @JoinColumn({ name: 'produto_id' })
   produto: Produto;
