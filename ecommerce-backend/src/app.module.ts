@@ -5,6 +5,8 @@ import { ClienteModule } from './cliente/cliente.module';
 import { EnderecoModule } from './endereco/endereco.module';
 import { CategoriaModule } from './categoria/categoria.module';
 import { ProdutoModule } from './produto/produto.module';
+import { PedidoModule } from './pedido/pedido.module';
+import { ItemPedidoModule } from './item-pedido/item-pedido.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { ProdutoModule } from './produto/produto.module';
     EnderecoModule,
     CategoriaModule,
     ProdutoModule,
+    PedidoModule,
+    ItemPedidoModule,
   ],
 })
 export class AppModule {}
