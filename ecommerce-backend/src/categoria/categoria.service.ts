@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+// Caminho: ecommerce-backend/src/categoria/categoria.service.ts
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Categoria } from './entities/categoria.entity';
@@ -18,11 +23,13 @@ export class CategoriaService {
    * @returns A categoria salva.
    */
   async create(createCategoriaDto: CreateCategoriaDto): Promise<Categoria> {
-    const nome = createCategoriaDto.nome.toUpperCase(); // Padroniza o nome
+    const nome = createCategoriaDto.nome.toUpperCase();
 
     // 1. Regra de Negócio: Verificar se a categoria já existe
-    const categoriaExistente = await this.categoriaRepository.findOne({ where: { nome } });
-    
+    const categoriaExistente = await this.categoriaRepository.findOne({
+      where: { nome },
+    });
+
     if (categoriaExistente) {
       throw new BadRequestException(`A categoria '${nome}' já existe.`);
     }
@@ -45,6 +52,7 @@ export class CategoriaService {
    * @returns A categoria encontrada.
    */
   async findOne(id: number): Promise<Categoria> {
+    // Usamos o findOneBy aqui para simplicidade, mas findOne com { where } também funciona
     const categoria = await this.categoriaRepository.findOne({ where: { id } });
     if (!categoria) {
       throw new NotFoundException(`Categoria com ID ${id} não encontrada.`);
@@ -58,18 +66,30 @@ export class CategoriaService {
    * @param updateCategoriaDto Dados de atualização.
    * @returns A categoria atualizada.
    */
-  async update(id: number, updateCategoriaDto: UpdateCategoriaDto): Promise<Categoria> {
-    const categoria = await this.findOne(id); // Reusa a função findOne para validar se existe
-    const novoNome = updateCategoriaDto.nome ? updateCategoriaDto.nome.toUpperCase() : categoria.nome;
+  async update(
+    id: number,
+    updateCategoriaDto: UpdateCategoriaDto,
+  ): Promise<Categoria> {
+    const categoria = await this.findOne(id);
+
+    // Verifica se o nome existe no DTO antes de tentar padronizar e salvar
+    const novoNome = updateCategoriaDto.nome
+      ? updateCategoriaDto.nome.toUpperCase()
+      : categoria.nome;
 
     // Se o nome foi alterado, verificar unicidade
     if (novoNome !== categoria.nome) {
-      const categoriaDuplicada = await this.categoriaRepository.findOne({ where: { nome: novoNome } });
+      const categoriaDuplicada = await this.categoriaRepository.findOne({
+        where: { nome: novoNome },
+      });
       if (categoriaDuplicada && categoriaDuplicada.id !== id) {
-        throw new BadRequestException(`Já existe uma categoria com o nome '${novoNome}'.`);
+        throw new BadRequestException(
+          `Já existe uma categoria com o nome '${novoNome}'.`,
+        );
       }
     }
 
+    // Aplica a atualização e salva
     categoria.nome = novoNome;
     return this.categoriaRepository.save(categoria);
   }
