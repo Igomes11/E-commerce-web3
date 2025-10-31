@@ -44,5 +44,5 @@ export class ClienteService {
     return this.clienteRepository.save(novoCliente);
   }
 
-  // Outros métodos CRUD (findById, findAll, update, delete) serão adicionados aqui.
+  
 }

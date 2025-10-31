@@ -1,4 +1,3 @@
-// Caminho: ecommerce-frontend/src/components/ProductCatalog.tsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -12,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { Produto, CurrentView } from "../types/types";
 
-const API_URL = "http://localhost:3000/produto"; // Sua rota de produtos
+const API_URL = "http://localhost:3000/produto";
 
 interface ProductCatalogProps {
   onSelectProduct: (id: number) => void;

@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/endereco/endereco.service.ts
 import {
   Injectable,
   NotFoundException,
@@ -9,7 +8,7 @@ import { Repository } from 'typeorm';
 import { Endereco } from './entities/endereco.entity';
 import { Cliente } from '../cliente/entities/cliente.entity';
 import { CreateEnderecoDto } from './dto/create-endereco.dto';
-import { UpdateEnderecoDto } from './dto/update-endereco.dto'; // <-- Este import funcionará agora
+import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 
 @Injectable()
 export class EnderecoService {

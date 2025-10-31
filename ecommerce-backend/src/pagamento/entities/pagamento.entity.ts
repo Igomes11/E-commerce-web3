@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/pagamento/entities/pagamento.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { Pedido } from '../../pedido/entities/pedido.entity';
 

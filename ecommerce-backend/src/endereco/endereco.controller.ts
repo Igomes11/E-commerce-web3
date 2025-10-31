@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/endereco/endereco.controller.ts
 import {
   Controller,
   Get,

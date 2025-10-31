@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/categoria/categoria.service.ts
 import {
   Injectable,
   BadRequestException,

@@ -23,7 +23,7 @@ import { PagamentoModule } from './pagamento/pagamento.module';
       useFactory: (configService: ConfigService) => ({
         type: configService.get<any>('DATABASE_TYPE'), 
         host: configService.get<string>('DATABASE_HOST'), 
-        // CORREÇÃO: Usamos '?? 3306' para garantir que haja um valor string para parseInt
+  
         port: parseInt(configService.get<string>('DATABASE_PORT') ?? '3306', 10), 
         username: configService.get<string>('DATABASE_USERNAME'), 
         password: configService.get<string>('DATABASE_PASSWORD'), 

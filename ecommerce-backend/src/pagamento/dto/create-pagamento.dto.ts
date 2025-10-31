@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/pagamento/dto/create-pagamento.dto.ts
 import { IsNotEmpty, IsInt, IsString, IsIn, IsNumber, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 

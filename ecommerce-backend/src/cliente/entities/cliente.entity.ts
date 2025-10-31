@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Endereco } from '../../endereco/entities/endereco.entity';
-import { Pedido } from '../../pedido/entities/pedido.entity'; // IMPORTADO
+import { Pedido } from '../../pedido/entities/pedido.entity';
 
 @Entity('cliente')
 export class Cliente {
@@ -27,7 +27,7 @@ export class Cliente {
   @OneToMany(() => Endereco, (endereco) => endereco.cliente)
   enderecos: Endereco[];
   
-  // CORRIGIDO: Adiciona o array de pedidos
+
   @OneToMany(() => Pedido, (pedido) => pedido.cliente)
   pedidos: Pedido[];
 }

@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/categoria/categoria.controller.ts
 import {
   Controller,
   Get,

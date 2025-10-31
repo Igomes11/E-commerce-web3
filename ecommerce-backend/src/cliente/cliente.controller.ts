@@ -10,7 +10,7 @@ export class ClienteController {
   /**
    * Rota POST /cliente para cadastrar um novo cliente.
    * @param createClienteDto Dados de criação do cliente
-   * @returns O cliente recém-criado.
+   * @returns 
    */
   @Post()
   // Aplica a validação do DTO
@@ -19,5 +19,4 @@ export class ClienteController {
     return this.clienteService.create(createClienteDto);
   }
 
-  // Outras rotas (GET, PUT, DELETE) serão adicionadas aqui.
 }

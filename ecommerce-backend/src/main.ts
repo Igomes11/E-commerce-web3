@@ -4,8 +4,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Habilita o CORS para permitir requisições do frontend (porta 5173)
-  // Isso resolve o erro "CORS error"
   app.enableCors({
     origin: 'http://localhost:5173', // Endereço do seu Front-end React
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos

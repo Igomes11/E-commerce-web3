@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/pagamento/pagamento.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PagamentoService } from './pagamento.service';

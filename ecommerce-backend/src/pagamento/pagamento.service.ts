@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/pagamento/pagamento.service.ts
 import {
   Injectable,
   BadRequestException,
@@ -17,7 +16,7 @@ export class PagamentoService {
   constructor(
     // 1. O construtor deve injetar o Repositório de Pagamento
     @InjectRepository(Pagamento)
-    private pagamentoRepository: Repository<Pagamento>, // CORRIGIDO
+    private pagamentoRepository: Repository<Pagamento>,
 
     // 2. O construtor deve injetar o DataSource
     private dataSource: DataSource,
@@ -106,5 +105,4 @@ export class PagamentoService {
     }
   }
 
-  // Métodos de consulta (findAll e findOne) podem ser adicionados aqui
 }

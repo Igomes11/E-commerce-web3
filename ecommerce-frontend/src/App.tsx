@@ -1,14 +1,11 @@
-// Caminho: ecommerce-frontend/src/App.tsx
 import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
-// CORREÇÃO: Adicionando .tsx ou .ts em TODAS as importações locais
 import AuthScreen from './AuthScreen.tsx'; 
 import NavigationBar from './components/NavigationBar.tsx';
 import ProductCatalog from './components/ProductCatalog.tsx';
 import ProductDetails from './components/ProductDetails.tsx'; 
 import { CurrentView, User } from './types/types'; 
-
-// ... (Restante do código)
+  
 
 function App() {
   const [user, setUser] = useState<User | null>(null);

@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/endereco/dto/update-endereco.dto.ts
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateEnderecoDto } from './create-endereco.dto';
 

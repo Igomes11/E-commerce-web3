@@ -1,4 +1,3 @@
-// Caminho: ecommerce-frontend/src/types/types.ts
 export type CurrentView = 'auth' | 'catalog' | 'details' | 'cart' | 'checkout' | 'history';
 
 export interface User {

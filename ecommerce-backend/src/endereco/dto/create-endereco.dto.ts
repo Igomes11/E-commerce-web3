@@ -1,4 +1,3 @@
-// Caminho: ecommerce-backend/src/endereco/dto/create-endereco.dto.ts
 import { IsNotEmpty, IsString, IsOptional, MaxLength, IsBoolean, IsInt, Matches } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -42,7 +41,6 @@ export class CreateEnderecoDto {
   @IsOptional()
   @IsBoolean({ message: 'O campo principal deve ser booleano.' })
   @Type(() => Boolean)
-  // Define um valor padrão para resolver o erro de tipagem TS2345 no Service
   principal?: boolean = false; 
   
   @IsNotEmpty({ message: 'O ID do cliente é obrigatório para testes.' })

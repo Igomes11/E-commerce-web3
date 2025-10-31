@@ -1,6 +1,5 @@
 import { IsString, IsEmail, IsNotEmpty, IsOptional, MinLength, MaxLength } from 'class-validator';
 
-// O DTO (Data Transfer Object) define o formato e as validações para a criação de um novo cliente.
 export class CreateClienteDto {
   @IsNotEmpty({ message: 'O nome é obrigatório.' })
   @IsString({ message: 'O nome deve ser uma string.' })
