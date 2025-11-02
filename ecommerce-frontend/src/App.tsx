@@ -4,10 +4,11 @@ import AuthScreen from './AuthScreen';
 import NavigationBar from './components/NavigationBar';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetails from './components/ProductDetails';
-import CartScreen from './components/CartScreen'; // IMPORTADO
-import CheckoutScreen from './components/ChekoutScreen'; // IMPORTADO
-import OrderHistory from './components/OrderHistory'; // IMPORTADO
-import type { CurrentView, User } from './types';
+import CartScreen from './components/CartScreen';
+import CheckoutScreen from './components/CheckoutScreen'; // CORRIGIDO: Assumindo renomeado para CheckoutScreen.tsx
+import OrderHistory from './components/OrderHistory';
+import ProfileScreen from './components/ProfileScreen'; // NOVO IMPORT
+import type { CurrentView, User } from './types/types'; // Importando do types/types.ts
   
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
     setCartItems([]);
   };
 
-  // NOVO: Função para limpar o carrinho após o checkout
+  // Função para limpar o carrinho após o checkout
   const handleClearCart = () => { 
       setCartItems([]);
   };
@@ -87,7 +88,7 @@ function App() {
           />
         );
       case 'cart':
-        return ( // RENDERIZA COMPONENTE DO CARRINHO
+        return (
           <CartScreen 
             cartItems={cartItems} 
             onUpdateCart={updateCart} 
@@ -95,7 +96,7 @@ function App() {
           />
         );
       case 'checkout':
-        return ( // RENDERIZA COMPONENTE DE CHECKOUT
+        return ( 
             <CheckoutScreen 
                 user={user as User}
                 cartItems={cartItems}
@@ -104,7 +105,11 @@ function App() {
             />
         );
       case 'history':
-        return <OrderHistory user={user} onChangeView={setView} />; // RENDERIZA COMPONENTE DE HISTÓRICO
+        return <OrderHistory user={user} onChangeView={setView} />; 
+      
+      case 'profile': // NOVA ROTA: Perfil e Endereços
+        return <ProfileScreen user={user} onChangeView={setView} />; 
+
       default:
         return <ProductCatalog 
             onSelectProduct={(id) => { setSelectedProductId(id); setView('details'); }} 

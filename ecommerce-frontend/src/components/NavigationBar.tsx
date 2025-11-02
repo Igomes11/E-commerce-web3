@@ -1,5 +1,5 @@
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
-import type { User, CurrentView } from "../types";
+import type { User, CurrentView } from "../types/types";
 
 interface NavigationBarProps {
   user: User;
@@ -31,9 +31,10 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
             </Nav.Link>
           </Nav>
           <Nav className="align-items-center">
-            <Navbar.Text className="text-white me-3">
-              Bem-vindo(a), <span className="fw-bold">{user.email}</span>
-            </Navbar.Text>
+            {/* NOVO/MODIFICADO: Link para o Perfil/Endereços. Usa o e-mail como texto de boas-vindas */}
+            <Nav.Link onClick={() => onViewChange("profile")} className="text-info me-3">
+              Olá, <span className="fw-bold">{user.email}</span>
+            </Nav.Link>
             <Button
               variant={cartCount > 0 ? "warning" : "outline-light"}
               className="mx-2 position-relative"
