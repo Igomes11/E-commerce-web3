@@ -4,6 +4,9 @@ import AuthScreen from './AuthScreen';
 import NavigationBar from './components/NavigationBar';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetails from './components/ProductDetails';
+import CartScreen from './components/CartScreen'; // IMPORTADO
+import CheckoutScreen from './components/ChekoutScreen'; // IMPORTADO
+import OrderHistory from './components/OrderHistory'; // IMPORTADO
 import type { CurrentView, User } from './types';
   
 
@@ -26,7 +29,12 @@ function App() {
     setView('auth');
     setCartItems([]);
   };
-  
+
+  // NOVO: Função para limpar o carrinho após o checkout
+  const handleClearCart = () => { 
+      setCartItems([]);
+  };
+
   // Lógica para adicionar/remover do carrinho
   const updateCart = (productId: number, change: number) => {
     setCartItems(prevItems => {
@@ -79,11 +87,24 @@ function App() {
           />
         );
       case 'cart':
-        return <h1 className='text-center mt-5'>🛒 Carrinho de Compras (Em Breve) - Itens: {cartItems.reduce((acc, item) => acc + item.quantidade, 0)}</h1>;
+        return ( // RENDERIZA COMPONENTE DO CARRINHO
+          <CartScreen 
+            cartItems={cartItems} 
+            onUpdateCart={updateCart} 
+            onChangeView={setView}
+          />
+        );
       case 'checkout':
-        return <h1 className='text-center mt-5'>💰 Checkout (Em Breve)</h1>;
+        return ( // RENDERIZA COMPONENTE DE CHECKOUT
+            <CheckoutScreen 
+                user={user as User}
+                cartItems={cartItems}
+                onClearCart={handleClearCart}
+                onChangeView={setView}
+            />
+        );
       case 'history':
-        return <h1 className='text-center mt-5'>📋 Histórico de Pedidos (Em Breve)</h1>;
+        return <OrderHistory user={user} onChangeView={setView} />; // RENDERIZA COMPONENTE DE HISTÓRICO
       default:
         return <ProductCatalog 
             onSelectProduct={(id) => { setSelectedProductId(id); setView('details'); }} 
