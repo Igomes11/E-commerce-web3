@@ -2,6 +2,7 @@ import { Container, Row, Col, Card, ListGroup, Button, Alert, Spinner } from 're
 import type { CurrentView, Produto } from '../types/types';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { formatPrice } from '../utils/format';
 
 const API_URL = 'http://localhost:3000/produto';
 
@@ -93,10 +94,10 @@ const CartScreen: React.FC<CartScreenProps> = ({ cartItems, onUpdateCart, onChan
                                     <div>
                                         <h5 className="mb-1">{product.nome}</h5>
                                         <p className="mb-0 text-muted">
-                                            R$ {product.preco.toFixed(2)} x {cartItem.quantidade} un. 
+                                            R$ {formatPrice(product.preco)} x {cartItem.quantidade} un. 
                                         </p>
                                         <p className="fw-bold">
-                                            Subtotal: R$ {(product.preco * cartItem.quantidade).toFixed(2)}
+                                            Subtotal: R$ {formatPrice(Number(product.preco) * cartItem.quantidade)}
                                         </p>
                                         {product.estoque <= cartItem.quantidade && (
                                             <small className="text-danger">Estoque Máximo Atingido ({product.estoque})!</small>
@@ -139,7 +140,7 @@ const CartScreen: React.FC<CartScreenProps> = ({ cartItems, onUpdateCart, onChan
                             <hr />
                             <div className="d-flex justify-content-between fw-bold fs-4">
                                 <span>TOTAL:</span>
-                                <span className="text-success">R$ {cartTotal.toFixed(2)}</span>
+                                <span className="text-success">R$ {formatPrice(cartTotal)}</span>
                             </div>
                             <Button 
                                 variant="primary" 

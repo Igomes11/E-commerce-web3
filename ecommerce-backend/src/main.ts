@@ -5,12 +5,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'http://localhost:5173', // Endereço do seu Front-end React
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Frontend na porta 5173 (padrão Vite)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
-  // Usa a porta do .env (3000) ou 3000 como padrão
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(3000); // Backend na porta 3000
 }
 bootstrap();

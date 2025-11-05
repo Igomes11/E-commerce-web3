@@ -35,12 +35,15 @@ export class ItemPedidoService {
     const precoVenda = produto.preco;
     const subtotal = precoVenda * quantidade;
 
-    return this.itemPedidoRepository.create({
+    const item = this.itemPedidoRepository.create({
       pedido: pedido,
       produto: produto,
       quantidade: quantidade,
       precoVenda: precoVenda,
       subtotal: subtotal,
     });
+
+    // Salva o item para que seja persistido no banco antes de retornar
+    return this.itemPedidoRepository.save(item);
   }
 }

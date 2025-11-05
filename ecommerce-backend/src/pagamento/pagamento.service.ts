@@ -85,8 +85,8 @@ export class PagamentoService {
         }
         
       } else if (novoStatusPagamento === PagamentoStatus.CANCELADO) {
-        // B. Se CANCELADO, o pedido retorna para ABERTO (Estoque NÃO é alterado)
-        novoStatusPedido = PedidoStatus.ABERTO;
+        // B. Se CANCELADO, marca o pedido como CANCELADO (Estoque NÃO é alterado)
+        novoStatusPedido = PedidoStatus.CANCELADO;
       }
       
       // 3. Atualiza o status do pedido

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { formatPrice } from "../utils/format";
 import {
   Container,
   Row,
@@ -92,7 +93,7 @@ const ProductCatalog: React.FC<ProductCatalogProps> = ({
                   </Card.Text>
                   <div className="d-flex justify-content-between align-items-center mt-auto">
                     <span className="fs-5 fw-bold text-success">
-                      R$ {product.preco.toFixed(2)}
+                      R$ {formatPrice(product.preco)}
                     </span>
                     <span
                       className={`badge bg-${

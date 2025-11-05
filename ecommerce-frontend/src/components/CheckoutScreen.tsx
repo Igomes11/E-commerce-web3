@@ -10,6 +10,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import { formatPrice } from "../utils/format";
 import type { CurrentView, User, Endereco, Produto } from "../types/types";
 
 const API_PEDIDO_URL = "http://localhost:3000/pedido";
@@ -195,8 +196,9 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
             <Card.Header>Endereço de Entrega</Card.Header>
             <Card.Body>
               <Form.Group controlId="selectAddress">
-                <Form.Label>Selecione o Endereço:</Form.Label>
+                <Form.Label id="selectAddressLabel">Selecione o Endereço:</Form.Label>
                 <Form.Select
+                  aria-labelledby="selectAddressLabel"
                   value={selectedAddressId || ""}
                   onChange={(e) =>
                     setSelectedAddressId(parseInt(e.target.value))
@@ -234,7 +236,7 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
                         {product.nome} x {item.quantidade}
                       </span>
                       <span className="fw-bold">
-                        R$ {(product.preco * item.quantidade).toFixed(2)}
+                        R$ {formatPrice(Number(product.preco) * item.quantidade)}
                       </span>
                     </li>
                   );
@@ -253,7 +255,7 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
 
               <div className="d-flex justify-content-between fw-bold fs-4 mb-4">
                 <span>Total a Pagar:</span>
-                <span className="text-success">R$ {cartTotal.toFixed(2)}</span>
+                <span className="text-success">R$ {formatPrice(cartTotal)}</span>
               </div>
 
               <p className="text-muted">

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { formatPrice } from '../utils/format';
 import { Container, Card, Button, Alert, Spinner, Row, Col, Form } from 'react-bootstrap';
 import type { Produto, CurrentView } from '../types';
 
@@ -91,7 +92,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, onChangeView
                         </Col>
                         <Col md={7}>
                             <Card.Title as="h1" className="text-primary">{product.nome}</Card.Title>
-                            <h2 className="text-success mb-4">R$ {product.preco.toFixed(2)}</h2>
+                            <h2 className="text-success mb-4">R$ {formatPrice(product.preco)}</h2>
 
                             <p className="text-muted">
                                 **Categoria:** {product.categoria?.nome || 'N/A'}

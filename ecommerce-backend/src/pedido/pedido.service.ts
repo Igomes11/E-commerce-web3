@@ -42,11 +42,14 @@ export class PedidoService {
       dataCriacao: new Date(),
     });
 
-    // 3. Processa e valida os itens, verificando o estoque
-    const itensEntityPromises = itensDto.map(itemDto => 
-      this.itemPedidoService.createItem(novoPedido, itemDto)
+    // 3. Salva o pedido primeiro para obter um ID válido
+    const pedidoSalvo = await this.pedidoRepository.save(novoPedido);
+
+    // 4. Processa e valida os itens, verificando o estoque e associando ao pedido salvo
+    const itensEntityPromises = itensDto.map((itemDto) =>
+      this.itemPedidoService.createItem(pedidoSalvo, itemDto),
     );
-    
+
     const itensEntity = await Promise.all(itensEntityPromises);
 
     // 4. Calcula Totais
@@ -58,14 +61,14 @@ export class PedidoService {
       quantidadeTotal += item.quantidade;
     });
 
-    // Atualiza o objeto Pedido
-    novoPedido.subtotal = subtotalGeral;
-    novoPedido.total = subtotalGeral; 
-    novoPedido.quantidadeTotal = quantidadeTotal;
-    novoPedido.itens = itensEntity;
+    // Atualiza o objeto Pedido salvo com os cálculos e itens persistidos
+    pedidoSalvo.subtotal = subtotalGeral;
+    pedidoSalvo.total = subtotalGeral;
+    pedidoSalvo.quantidadeTotal = quantidadeTotal;
+    pedidoSalvo.itens = itensEntity;
 
-    // 5. Salva Pedido e Itens
-    return this.pedidoRepository.save(novoPedido);
+    // 5. Salva novamente o pedido já com itens vinculados
+    return this.pedidoRepository.save(pedidoSalvo);
   }
 
   async findOne(id: number): Promise<Pedido> {

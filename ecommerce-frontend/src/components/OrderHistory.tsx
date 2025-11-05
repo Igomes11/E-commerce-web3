@@ -6,10 +6,16 @@ import {
   Alert,
   Button,
   Spinner,
+  Modal,
+  Form,
+  Toast,
+  Table,
 } from "react-bootstrap";
 import type { CurrentView, User, Produto } from "../types/types";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { formatPrice } from "../utils/format";
+import styles from "./OrderHistory.module.css";
 
 const API_PEDIDO_URL = "http://localhost:3000/pedido";
 const API_PAGAMENTO_URL = "http://localhost:3000/pagamento";
@@ -39,12 +45,6 @@ interface Pedido {
     estado: string;
   };
 }
-
-// Valores do Enum de Pagamento (para uso no frontend)
-const PagamentoStatus = {
-  PAGO: "PAGO",
-  CANCELADO: "CANCELADO",
-} as const;
 
 interface OrderHistoryProps {
   user: User;
@@ -76,40 +76,93 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ user, onChangeView }) => {
     }
   };
 
-  const handleProcessPayment = async (
+  // Modal / UI de pagamento
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [modalOrderId, setModalOrderId] = useState<number | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<string>("PIX");
+
+  const openPaymentModal = (orderId: number) => {
+    setModalOrderId(orderId);
+    setSelectedMethod("PIX");
+    setShowPaymentModal(true);
+  };
+
+  const closePaymentModal = () => setShowPaymentModal(false);
+
+  const mapFrontendMethodToBackend = (m: string) => {
+    switch (m) {
+      case "Dinheiro":
+        return "Boleto";
+      case "Débito":
+        return "Cartão";
+      case "Crédito":
+        return "Cartão";
+      case "PIX":
+        return "PIX";
+      default:
+        return m;
+    }
+  };
+
+  const processPaymentRequest = async (
     pedidoId: number,
-    status: typeof PagamentoStatus.PAGO | typeof PagamentoStatus.CANCELADO
+    metodo: string,
+    novoStatus: "PAGO" | "CANCELADO",
+    valor?: number
   ) => {
     setIsLoading(true);
     setError(null);
-    try {
-      // Chama a rota de processamento de pagamento do backend
-      const paymentResponse = await axios.post(
-        `${API_PAGAMENTO_URL}/processar`,
-        {
-          pedidoId: pedidoId,
-          metodo: "Cartão", // Método fixo para simulação, o backend não usa para a lógica
-          valor: 0, // O backend ignora este valor e usa o total do pedido
-          novoStatus: status,
-        }
-      );
+  try {
+      // Se não foi passado valor, tenta recuperar do pedido localmente
+      let finalValor = valor;
+      if (finalValor === undefined) {
+        const order = orders.find((o) => o.id === pedidoId);
+        finalValor = order ? Number(order.total) : 0;
+      }
 
-      alert(
-        `Pagamento do Pedido #${pedidoId} processado com status: ${paymentResponse.data.status}.`
-      );
-      await fetchOrders(); // Recarrega os pedidos para atualizar o status e o estoque
+      // Garantir número e positivo (backend exige valor positivo)
+      finalValor = Number(finalValor ?? 0);
+      if (!isFinite(finalValor) || finalValor <= 0) {
+        throw new Error("O VALOR TEM QUE SER POSITIVO");
+      }
+
+      await axios.post(`${API_PAGAMENTO_URL}/processar`, {
+        pedidoId,
+        metodo,
+        valor: finalValor,
+        novoStatus,
+      });
+      await fetchOrders();
+      closePaymentModal();
+      // mostrar toast de sucesso
+      setToastMessage(`Pagamento do pedido #${pedidoId} processado com sucesso.`);
+      setToastVariant("success");
+      setShowToast(true);
     } catch (err) {
       let errorMsg = "Erro ao processar pagamento.";
-      if (axios.isAxiosError(err) && err.response?.data?.message) {
+      if (err instanceof Error && err.message === "O VALOR TEM QUE SER POSITIVO") {
+        errorMsg = "O VALOR TEM QUE SER POSITIVO";
+      } else if (axios.isAxiosError(err) && err.response?.data?.message) {
         errorMsg = Array.isArray(err.response.data.message)
           ? err.response.data.message[0]
           : err.response.data.message;
       }
       setError(errorMsg);
+      setToastMessage(errorMsg);
+      setToastVariant("danger");
+      setShowToast(true);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Toasts de feedback
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastVariant, setToastVariant] = useState<"success" | "danger">("success");
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+  
 
   const getStatusVariant = (status: string) => {
     switch (status) {
@@ -157,7 +210,15 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ user, onChangeView }) => {
 
   return (
     <Container className="my-5">
-      <h2>📋 Histórico de Pedidos</h2>
+      <div className="d-flex justify-content-between align-items-center my-3">
+        <h2>📋 Histórico de Pedidos</h2>
+        <div>
+          <Button variant="outline-secondary" className="me-2" onClick={() => setShowClearConfirm(true)}>
+            Limpar tela
+          </Button>
+          <Button variant="primary" onClick={fetchOrders}>Recarregar</Button>
+        </div>
+      </div>
       {orders.map((order) => (
         <Card key={order.id} className="mb-4 shadow-sm">
           <Card.Header
@@ -180,7 +241,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ user, onChangeView }) => {
                   <strong>Itens Totais:</strong> {order.quantidadeTotal}
                 </p>
                 <p className="fw-bold">
-                  <strong>Total:</strong> R$ {order.total.toFixed(2)}
+                  <strong>Total:</strong> R$ {formatPrice(order.total)}
                 </p>
               </Col>
               <Col md={6}>
@@ -196,45 +257,172 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ user, onChangeView }) => {
             <hr />
 
             <h5 className="mb-3">Produtos Comprados</h5>
-            <ul>
-              {order.itens.map((item) => (
-                <li key={item.id}>
-                  {item.produto.nome} ({item.quantidade}x) - R${" "}
-                  {item.subtotal.toFixed(2)}
-                </li>
-              ))}
-            </ul>
+            <Table bordered size="sm">
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Qtde</th>
+                  <th>Preço unit.</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {order.itens.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.produto.nome}</td>
+                    <td>{item.quantidade}</td>
+                    <td>R$ {formatPrice(item.precoVenda)}</td>
+                    <td>R$ {formatPrice(item.subtotal)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
 
             {order.status === "AGUARDANDO_PAGAMENTO" && (
               <div className="mt-4">
-                <Alert variant="warning">
-                  Ação Necessária: Simular Pagamento
-                </Alert>
+                <Alert variant="warning">Ação Necessária: Simular Pagamento</Alert>
                 <Button
-                  variant="success"
+                  variant="primary"
                   className="me-2"
-                  onClick={() =>
-                    handleProcessPayment(order.id, PagamentoStatus.PAGO as any)
-                  }
+                  onClick={() => openPaymentModal(order.id)}
                 >
-                  Simular Pagamento (Sucesso)
+                  Pagar
                 </Button>
                 <Button
                   variant="danger"
                   onClick={() =>
-                    handleProcessPayment(
+                    processPaymentRequest(
                       order.id,
-                      PagamentoStatus.CANCELADO as any
+                      mapFrontendMethodToBackend("PIX"),
+                      "CANCELADO"
                     )
                   }
                 >
-                  Simular Cancelamento
+                  Cancelar Pedido
                 </Button>
               </div>
             )}
           </Card.Body>
         </Card>
       ))}
+
+      {/* Modal para seleção de método de pagamento */}
+      <Modal show={showPaymentModal} onHide={closePaymentModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Pagar Pedido #{modalOrderId}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {modalOrderId ? (
+            (() => {
+              const order = orders.find((o) => o.id === modalOrderId);
+              if (!order) return <p>Pedido não encontrado.</p>;
+              return (
+                <div>
+                  <p>
+                    <strong>Total:</strong> R$ {formatPrice(order.total)}
+                  </p>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Método de Pagamento</Form.Label>
+                    <Form.Select
+                      value={selectedMethod}
+                      onChange={(e) => setSelectedMethod(e.target.value)}
+                    >
+                      <option>Dinheiro</option>
+                      <option>Débito</option>
+                      <option>Crédito</option>
+                      <option>PIX</option>
+                    </Form.Select>
+                  </Form.Group>
+                  <h6>Itens</h6>
+                  <Table bordered size="sm">
+                    <thead>
+                      <tr>
+                        <th>Produto</th>
+                        <th>Qtde</th>
+                        <th>Preço unit.</th>
+                        <th>Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {order.itens.map((it) => (
+                        <tr key={it.id}>
+                          <td>{it.produto.nome}</td>
+                          <td>{it.quantidade}</td>
+                          <td>R$ {formatPrice(it.precoVenda)}</td>
+                          <td>R$ {formatPrice(it.subtotal)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              );
+            })()
+          ) : (
+            <p>Selecione um pedido.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closePaymentModal}>
+            Fechar
+          </Button>
+          <Button
+            variant="success"
+            onClick={() => {
+              if (!modalOrderId) return;
+              const backendMethod = mapFrontendMethodToBackend(selectedMethod);
+              processPaymentRequest(modalOrderId, backendMethod, "PAGO");
+            }}
+          >
+            Pagar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal de confirmação para limpar a tela de pedidos */}
+      <Modal show={showClearConfirm} onHide={() => setShowClearConfirm(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar limpeza</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Tem certeza que deseja limpar a tela de pedidos? Esta ação só afeta a visualização atual e não excluirá pedidos no servidor.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowClearConfirm(false)}>
+            Cancelar
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              setOrders([]);
+              setShowClearConfirm(false);
+              setToastMessage('Tela de pedidos limpa.');
+              setToastVariant('success');
+              setShowToast(true);
+            }}
+          >
+            Confirmar limpeza
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* Toast container fixo (canto superior direito) */}
+      <div aria-live="polite" className={styles.toastFixed}>
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          bg={toastVariant}
+          delay={3500}
+          autohide
+        >
+          <Toast.Header>
+            <strong className="me-auto">
+              {toastVariant === "success" ? "Sucesso" : "Erro"}
+            </strong>
+          </Toast.Header>
+          <Toast.Body className={toastVariant === "danger" ? styles.toastBodyDanger : ""}>
+            {toastMessage}
+          </Toast.Body>
+        </Toast>
+      </div>
     </Container>
   );
 };
