@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ItemPedido } from '../pedido/entities/item-pedido.entity';
+import { ItemPedido } from './entities/item-pedido.entity';
 import { Produto } from '../produto/entities/produto.entity';
 import { Pedido } from '../pedido/entities/pedido.entity';
 import { ItemPedidoDto } from '../pedido/dto/item-pedido.dto';

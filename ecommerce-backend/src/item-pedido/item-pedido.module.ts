@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ItemPedidoService } from './item-pedido.service';
 import { ItemPedidoController } from './item-pedido.controller';
-import { ItemPedido } from '../pedido/entities/item-pedido.entity';
+import { ItemPedido } from './entities/item-pedido.entity';
 import { Produto } from '../produto/entities/produto.entity';
 
 @Module({
